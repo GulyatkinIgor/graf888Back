@@ -81,7 +81,7 @@ const getDataKvartus = setInterval(function () {
 }, 6000);
 
 app.get("/api/aparts", (req, res) => {
-  res.status(200).json(jsonDataKvartusSort);
+  res.status(200).json(jsonDataKvartus);
 });
 
 app.get("/api/flats", (req, res) => {

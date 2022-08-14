@@ -4,18 +4,14 @@ const axios = require("axios").default;
 var convert = require("xml-js");
 const app = express();
 
-var jsonDataKvartus = [];
-const people = [
-  { firstName: "Elson", lastName: "Correia", info: { age: 24 } },
-  { firstName: "John", lastName: "Doe", info: { age: 18 } },
-  { firstName: "Jane", lastName: "Doe", info: { age: 34 } },
-  { firstName: "Maria", lastName: "Carvalho", info: { age: 22 } },
-  { firstName: "Kelly", lastName: "Correia", info: { age: 23 } },
-  { firstName: "Don", lastName: "Quichote", info: { age: 39 } },
-  { firstName: "Marcus", lastName: "Correia", info: { age: 0 } },
-  { firstName: "Bruno", lastName: "Gonzales", info: { age: 25 } },
-  { firstName: "Alonzo", lastName: "Correia", info: { age: 44 } },
-];
+var jsonDataKvartusSort = [];
+
+var JsonKvartusFlats = [];
+var JsonKvartusHome = [];
+var JsonKvartusCommerce = [];
+var JsonKvartusGarage = [];
+var JsonKvartusYard = [];
+var JsonKvartusRoom = [];
 
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
@@ -52,19 +48,64 @@ getDataApparts = async () => {
         convert.xml2json(response.data, { compact: true, spaces: 2 })
       );
       jsonDataKvartus = dataJson.Ads.Ad;
+
+      JsonKvartusFlats = jsonDataKvartus.filter(function (appart) {
+        return appart.Category._text == "Квартиры";
+      });
+
+      JsonKvartusHome = jsonDataKvartus.filter(function (appart) {
+        return appart.Category._text == "Дома, дачи, коттеджи";
+      });
+
+      JsonKvartusCommerce = jsonDataKvartus.filter(function (appart) {
+        return appart.Category._text == "Коммерческая недвижимость";
+      });
+
+      JsonKvartusGarage = jsonDataKvartus.filter(function (appart) {
+        return appart.Category._text == "Гаражи и машиноместа";
+      });
+
+      JsonKvartusYard = jsonDataKvartus.filter(function (appart) {
+        return appart.Category._text == "Земельные участки";
+      });
+
+      JsonKvartusRoom = jsonDataKvartus.filter(function (appart) {
+        return appart.Category._text == "Комнаты";
+      });
     });
 };
 
 const getDataKvartus = setInterval(function () {
   getDataApparts();
-  console.log("data json", jsonDataKvartus);
+  //console.log("data json", jsonDataKvartus);
 }, 6000);
 
 app.get("/api/aparts", (req, res) => {
-  res.status(200).json(jsonDataKvartus);
+  res.status(200).json(jsonDataKvartusSort);
 });
-app.get("/api/people", (req, res) => {
-  res.status(200).json(people);
+
+app.get("/api/flats", (req, res) => {
+  res.status(200).json(JsonKvartusFlats);
+});
+
+app.get("/api/home", (req, res) => {
+  res.status(200).json(JsonKvartusHome);
+});
+
+app.get("/api/coommerce", (req, res) => {
+  res.status(200).json(JsonKvartusCommerce);
+});
+
+app.get("/api/garage", (req, res) => {
+  res.status(200).json(JsonKvartusGarage);
+});
+
+app.get("/api/yards", (req, res) => {
+  res.status(200).json(JsonKvartusYard);
+});
+
+app.get("/api/room", (req, res) => {
+  res.status(200).json(JsonKvartusRoom);
 });
 
 app.use(express.static(path.resolve(__dirname, "web-build")));

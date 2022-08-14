@@ -6,13 +6,23 @@ const app = express();
 
 var jsonDataKvartusSort = [];
 
-var JsonKvartusFlats = [];
-var JsonKvartusHome = [];
-var JsonKvartusCommerce = [];
-var JsonKvartusGarage = [];
-var JsonKvartusYard = [];
-var JsonKvartusRoom = [];
-//var JsonKvartusNovostroiki = [];
+var jsonDataKvartusSale = [];
+
+var JsonKvartusFlatsSale = [];
+var JsonKvartusHomeSale = [];
+var JsonKvartusCommerceSale = [];
+var JsonKvartusGarageSale = [];
+var JsonKvartusYardSale = [];
+var JsonKvartusRoomSale = [];
+
+var jsonDataKvartusRent = [];
+
+var JsonKvartusFlatsRent = [];
+var JsonKvartusHomeRent = [];
+var JsonKvartusCommerceRent = [];
+var JsonKvartusGarageRent = [];
+var JsonKvartusYardRent = [];
+var JsonKvartusRoomRent = [];
 
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
@@ -50,72 +60,137 @@ getDataApparts = async () => {
       );
       jsonDataKvartus = dataJson.Ads.Ad;
 
-      JsonKvartusFlats = jsonDataKvartus.filter(function (appart) {
+      //Сортировка продажи
+
+      jsonDataKvartusSale = jsonDataKvartus.filter(function (appart) {
+        return appart.OperationType._text == "Продам";
+      });
+
+      JsonKvartusFlatsSale = jsonDataKvartusSale.filter(function (appart) {
         return appart.Category._text == "Квартиры";
       });
 
-      JsonKvartusHome = jsonDataKvartus.filter(function (appart) {
+      JsonKvartusHomeSale = jsonDataKvartusSale.filter(function (appart) {
         return appart.Category._text == "Дома, дачи, коттеджи";
       });
 
-      JsonKvartusCommerce = jsonDataKvartus.filter(function (appart) {
+      JsonKvartusCommerceSale = jsonDataKvartusSale.filter(function (appart) {
         return appart.Category._text == "Коммерческая недвижимость";
       });
 
-      JsonKvartusGarage = jsonDataKvartus.filter(function (appart) {
+      JsonKvartusGarageSale = jsonDataKvartusSale.filter(function (appart) {
         return appart.Category._text == "Гаражи и машиноместа";
       });
 
-      JsonKvartusYard = jsonDataKvartus.filter(function (appart) {
+      JsonKvartusYardSale = jsonDataKvartusSale.filter(function (appart) {
         return appart.Category._text == "Земельные участки";
       });
 
-      JsonKvartusRoom = jsonDataKvartus.filter(function (appart) {
+      JsonKvartusRoomSale = jsonDataKvartusSale.filter(function (appart) {
+        return appart.Category._text == "Комнаты";
+      });
+
+      //Сортировка аренды
+
+      jsonDataKvartusRent = jsonDataKvartus.filter(function (appart) {
+        return appart.OperationType._text == "Сдам";
+      });
+
+      JsonKvartusFlatsRent = jsonDataKvartusRent.filter(function (appart) {
+        return appart.Category._text == "Квартиры";
+      });
+
+      JsonKvartusHomeRent = jsonDataKvartusRent.filter(function (appart) {
+        return appart.Category._text == "Дома, дачи, коттеджи";
+      });
+
+      JsonKvartusCommerceRent = jsonDataKvartusRent.filter(function (appart) {
+        return appart.Category._text == "Коммерческая недвижимость";
+      });
+
+      JsonKvartusGarageRent = jsonDataKvartusRent.filter(function (appart) {
+        return appart.Category._text == "Гаражи и машиноместа";
+      });
+
+      JsonKvartusYardRent = jsonDataKvartusRent.filter(function (appart) {
+        return appart.Category._text == "Земельные участки";
+      });
+
+      JsonKvartusRoomRent = jsonDataKvartusRent.filter(function (appart) {
         return appart.Category._text == "Комнаты";
       });
     });
-
-  // JsonKvartusNovostroiki = jsonDataKvartus.filter(function (appart) {
-  //   return appart.MarketType._text == "Новостройка";
-  // });
 };
 
 const getDataKvartus = setInterval(function () {
   getDataApparts();
-  //console.log("data json", jsonDataKvartus);
 }, 6000);
+
+// GET request all
 
 app.get("/api/aparts", (req, res) => {
   res.status(200).json(jsonDataKvartus);
 });
 
-app.get("/api/flats", (req, res) => {
-  res.status(200).json(JsonKvartusFlats);
+// GET request RENT
+
+app.get("/api/rent", (req, res) => {
+  res.status(200).json(jsonDataKvartusRent);
 });
 
-app.get("/api/home", (req, res) => {
-  res.status(200).json(JsonKvartusHome);
+app.get("/api/rent/flat", (req, res) => {
+  res.status(200).json(JsonKvartusFlatsRent);
 });
 
-app.get("/api/commerce", (req, res) => {
-  res.status(200).json(JsonKvartusCommerce);
+app.get("/api/rent/home", (req, res) => {
+  res.status(200).json(JsonKvartusHomeRent);
 });
 
-app.get("/api/garage", (req, res) => {
-  res.status(200).json(JsonKvartusGarage);
+app.get("/api/rent/commerce", (req, res) => {
+  res.status(200).json(JsonKvartusCommerceRent);
 });
 
-app.get("/api/yards", (req, res) => {
-  res.status(200).json(JsonKvartusYard);
+app.get("/api/rent/garage", (req, res) => {
+  res.status(200).json(JsonKvartusGarageRent);
 });
 
-app.get("/api/room", (req, res) => {
-  res.status(200).json(JsonKvartusRoom);
+app.get("/api/rent/yard", (req, res) => {
+  res.status(200).json(JsonKvartusYardRent);
 });
 
-// app.get("/api/novostroika", (req, res) => {
-//   res.status(200).json(JsonKvartusNovostroiki);
-// });
+app.get("/api/rent/room", (req, res) => {
+  res.status(200).json(JsonKvartusRoomRent);
+});
+
+//GET request SELL
+
+app.get("/api/sale", (req, res) => {
+  res.status(200).json(jsonDataKvartusSale);
+});
+
+app.get("/api/sale/flat", (req, res) => {
+  res.status(200).json(JsonKvartusFlatsSale);
+});
+
+app.get("/api/sale/home", (req, res) => {
+  res.status(200).json(JsonKvartusHomeSale);
+});
+
+app.get("/api/sale/commerce", (req, res) => {
+  res.status(200).json(JsonKvartusCommerceSale);
+});
+
+app.get("/api/sale/garage", (req, res) => {
+  res.status(200).json(JsonKvartusGarageSale);
+});
+
+app.get("/api/sale/yard", (req, res) => {
+  res.status(200).json(JsonKvartusYardSale);
+});
+
+app.get("/api/sale/room", (req, res) => {
+  res.status(200).json(JsonKvartusRoomSale);
+});
 
 app.use(express.static(path.resolve(__dirname, "web-build")));
 

@@ -12,6 +12,7 @@ var JsonKvartusCommerce = [];
 var JsonKvartusGarage = [];
 var JsonKvartusYard = [];
 var JsonKvartusRoom = [];
+//var JsonKvartusNovostroiki = [];
 
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
@@ -73,6 +74,10 @@ getDataApparts = async () => {
         return appart.Category._text == "Комнаты";
       });
     });
+
+  // JsonKvartusNovostroiki = jsonDataKvartus.filter(function (appart) {
+  //   return appart.MarketType._text == "Новостройка";
+  // });
 };
 
 const getDataKvartus = setInterval(function () {
@@ -92,7 +97,7 @@ app.get("/api/home", (req, res) => {
   res.status(200).json(JsonKvartusHome);
 });
 
-app.get("/api/coommerce", (req, res) => {
+app.get("/api/commerce", (req, res) => {
   res.status(200).json(JsonKvartusCommerce);
 });
 
@@ -107,6 +112,10 @@ app.get("/api/yards", (req, res) => {
 app.get("/api/room", (req, res) => {
   res.status(200).json(JsonKvartusRoom);
 });
+
+// app.get("/api/novostroika", (req, res) => {
+//   res.status(200).json(JsonKvartusNovostroiki);
+// });
 
 app.use(express.static(path.resolve(__dirname, "web-build")));
 
